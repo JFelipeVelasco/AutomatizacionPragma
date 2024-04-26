@@ -1,0 +1,67 @@
+buildscript {
+    repositories {
+        maven {
+            url "https://plugins.gradle.org/m2/"
+        }
+    }
+    dependencies {
+        classpath "net.serenity-bdd:serenity-gradle-plugin:4.0.27"
+    }
+}
+
+group = 'org.example'
+version = '1.0-SNAPSHOT'
+
+defaultTasks 'clean', 'test', 'aggregate'
+
+apply plugin: 'java'
+apply plugin: 'eclipse'
+apply plugin: 'idea'
+apply plugin: "net.serenity-bdd.serenity-gradle-plugin"
+
+compileJava.options.encoding = "UTF-8"
+compileTestJava.options.encoding = "UTF-8"
+
+def serenityVersion = '4.1.9'
+def serenityCucumberVersion = '4.1.9'
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+
+    //DEPENDENCIAS SERENITY - TECNOLOGIAS WEB
+    implementation group: 'org.seleniumhq.selenium', name: 'selenium-java', version: '4.16.1'
+
+    implementation group: 'net.serenity-bdd', name: 'serenity-cucumber', version: "${serenityCucumberVersion}"
+    implementation group: 'io.cucumber', name: 'datatable', version: '7.15.0'
+    testImplementation group: 'io.cucumber', name: 'cucumber-junit', version: '7.15.0'
+
+    implementation group: 'net.serenity-bdd', name: 'serenity-core', version: "${serenityVersion}"
+    implementation group: 'net.serenity-bdd', name: 'serenity-reports', version: "${serenityVersion}"
+    implementation group: 'net.serenity-bdd', name: 'serenity-screenplay', version: "${serenityVersion}"
+    implementation group: 'net.serenity-bdd', name: 'serenity-screenplay-rest', version: "${serenityVersion}"
+    implementation group: 'net.serenity-bdd', name: 'serenity-screenplay-webdriver', version: "${serenityVersion}"
+    implementation group: 'net.serenity-bdd', name: 'serenity-junit', version: '4.0.29'
+
+    testImplementation group: 'junit', name: 'junit', version: '4.13.2'
+    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.10.1'
+    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.10.1'
+
+    //DEPENDENCIAS DE UTILIDADES
+    compileOnly 'org.projectlombok:lombok:1.18.30'
+    annotationProcessor 'org.projectlombok:lombok:1.18.30'
+
+    implementation group: 'org.slf4j', name: 'slf4j-api', version: '2.0.11'
+    testImplementation group: 'org.slf4j', name: 'slf4j-simple', version: '2.0.11'
+}
+
+test {
+    useJUnit {
+        gradle.startParameter.continueOnFailure = true
+        testLogging.showStandardStreams = true
+        systemProperties System.getProperties()
+        systemProperty "cucumber.filter.tags", System.getProperty("cucumber.filter.tags")
+    }
+}
