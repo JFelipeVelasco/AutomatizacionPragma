@@ -10,7 +10,7 @@ import static io.cucumber.junit.CucumberOptions.SnippetType.CAMELCASE;
 @CucumberOptions(features = "src/test/resources/features/AddToCart.feature",
         glue = "stepsdefinitions",
         snippets = CAMELCASE,
-        tags = "@Test7")
+        tags = "")
 
 public class AddToCartRunner {
 
